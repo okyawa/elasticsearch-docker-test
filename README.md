@@ -21,7 +21,7 @@ docker-compose up -d
 - 以下のメッセージが出ればelasticsearchコンテナの起動完了
   - `localhost:9200` で起動
 
-> Creating es01 ... done
+> Creating es01 ... done  
 > Creating es02 ... done
 
 
