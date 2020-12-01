@@ -1,4 +1,6 @@
-# dockerでElasticsearchを起動
+# DockerでElasticsearchを試用
+
+
 
 
 ## 初期設定
@@ -21,6 +23,40 @@ docker-compose up -d
 
 > Creating es01 ... done
 > Creating es02 ... done
+
+
+### elasticsearchクラスタの停止
+
+```sh
+docker-compose down
+```
+
+- Dockerイメージの削除まで同時に行いたい場合
+
+```sh
+docker-compose down --rmi all
+```
+
+
+
+
+## コマンドラインからcurlで状態確認
+
+
+### クラスのヘルスチェック
+
+```sh
+curl -X GET "localhost:9200/_cat/health?v&pretty"
+```
+
+
+### 各ノードのステータスを取得
+
+```sh
+curl -X GET "localhost:9200/_cat/nodes?v&pretty"
+```
+
+
 
 
 ## 参照
