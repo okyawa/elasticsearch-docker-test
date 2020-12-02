@@ -26,7 +26,6 @@ Key       | 説明
 curl -H "Content-Type: application/json" -X POST "localhost:9200/bank/_bulk?pretty&refresh" --data-binary "@sample-data/accounts.json"
 ```
 
-
 ### リクエスト例
 
 ```sh
@@ -39,6 +38,15 @@ curl -X GET "localhost:9200/bank/_search?pretty" -H 'Content-Type: application/j
   "sort": { "balance": { "order": "desc" } }
 }
 '
+```
+
+
+
+
+## 流し込んだサンプルデータを削除
+
+```sh
+curl -X DELETE "localhost:9200/bank?pretty"
 ```
 
 
@@ -221,10 +229,122 @@ curl -X GET "localhost:9200/bank/_search?pretty" -H 'Content-Type: application/j
 
 
 
+## indexの詳細情報を表示
+
+- mappingsやsettingsなど (スキーマ的なもの)
+
+```sh
+curl -X GET "localhost:9200/bank?pretty" 
+```
+
+
+
+
+## 配列データに含んでいるものがあるもを抽出 (array contains的なやつ)
+
+
+### 保存された値が文字列配列の場合
+
+- ダブルクオーテーションで値の文字列を囲う必要なし
+
+```sh
+curl -X GET "localhost:9200/bank/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "bool" : {
+      "filter": {
+        "query_string" : { "query" : "hobbies:(music)" }
+      }
+    }
+  },
+  "_source": ["account_number", "balance", "hobbies"],
+  "size": 10,
+  "sort": { "balance": { "order": "desc" } }
+}
+'
+```
+
+
+### 保存された値が数値配列の場合
+
+```sh
+curl -X GET "localhost:9200/bank/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "bool" : {
+      "filter": {
+        "query_string" : { "query" : "groupId:(11)" }
+      }
+    }
+  },
+  "_source": ["account_number", "balance", "groupId"],
+  "size": 10,
+  "sort": { "balance": { "order": "desc" } }
+}
+'
+```
+
+
+### 配列に含まれないものだけを抽出 (not array contains的なやつ)
+
+- `NOT ()` もしくは `!()`
+
+```sh
+curl -X GET "localhost:9200/bank/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "bool" : {
+      "filter": {
+        "query_string" : { "query" : "NOT (groupId:(11))" }
+      }
+    }
+  },
+  "_source": ["account_number", "balance", "groupId"],
+  "size": 5,
+  "sort": { "balance": { "order": "desc" } }
+}
+'
+```
+
+
+
+
+## aggregations (集約クエリ)
+
+
+- ElasticSearchの集計機能
+
+
+### aggregationsのサンプル
+
+- 自動mappingの場合、数値型のみ動作を確認
+  - 文字列をAggregationの引数に指定するとエラーになる
+
+```sh
+curl -X GET "localhost:9200/bank/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": { "match_all": {} },
+  "_source": ["account_number", "balance", "name", "firstname"],
+  "aggs": {
+    "types": {
+      "terms": {
+        "field": "balance"
+      }
+    }
+  },
+  "size": 10,
+  "sort": { "balance": { "order": "desc" } }
+}'
+```
+
+
+
+
 ## 参照
 
 - [公式サンプルデータ - elastic elasticsearch - GitHub](https://github.com/elastic/elasticsearch/blob/master/docs/src/test/resources/accounts.json)
 - https://qiita.com/kiyokiyo_kzsby/items/344fb2e9aead158a5545
+- https://qiita.com/NAO_MK2/items/630f2c4caa0e8a42407c
 
 
 

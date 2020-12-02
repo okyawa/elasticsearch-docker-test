@@ -79,3 +79,6 @@ curl -X GET "localhost:9200/_cat/nodes?v&pretty"
 ## 参照
 
 - https://qiita.com/kiyokiyo_kzsby/items/344fb2e9aead158a5545
+- https://qiita.com/NAO_MK2/items/630f2c4caa0e8a42407c
+
+
