@@ -43,7 +43,7 @@ docker-compose down --rmi all
 ## コマンドラインからcurlで状態確認
 
 
-### クラスのヘルスチェック
+### クラスタのヘルスチェック
 
 ```sh
 curl -X GET "localhost:9200/_cat/health?v&pretty"

@@ -52,6 +52,15 @@ curl -X DELETE "localhost:9200/bank?pretty"
 
 
 
+## インデックスのステータス表示
+
+```sh
+curl -X GET "localhost:9200/bank/_stats?pretty"
+```
+
+
+
+
 ## 検索クエリ
 
 
