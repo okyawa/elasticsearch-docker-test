@@ -55,6 +55,19 @@ curl -X DELETE "localhost:9200/bank?pretty"
 ## 検索クエリ
 
 
+### match_all
+
+- 全件取得
+
+```sh
+curl -X GET "localhost:9200/bank/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": { "match_all": {} }
+}
+'
+```
+
+
 ### match
 
 - 指定したワードが含まれているdocumentを返す
