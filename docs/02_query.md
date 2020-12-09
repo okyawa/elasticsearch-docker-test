@@ -331,6 +331,35 @@ curl -X GET "localhost:9200/bank/_search?pretty" -H 'Content-Type: application/j
 
 
 
+## フィールド毎に重み付け
+
+- `boost` は条件にマッチした場合にscoreを加算する機能で、 `boost: 2` の場合はscoreが2倍になる
+
+```sh
+curl -X GET "localhost:9200/bank/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "bool" : {
+      "should" : [
+        {
+          "match" : {
+            "address" : {
+              "query": "mill",
+              "boost": 2
+            }
+          }
+        },
+        { "range" : { "age" : { "gte" : 21, "lte" : 30 }}}
+      ]
+    }
+  }
+}
+'
+```
+
+
+
+
 ## aggregations (集約クエリ)
 
 
