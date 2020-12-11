@@ -33,7 +33,7 @@ curl -X PUT 'localhost:9200/my_index' -H 'Content-Type: application/json' -d'
 ```sh
 curl -X GET "localhost:9200/my_index/_analyze?pretty" -H 'Content-Type: application/json' -d'
 {
-  "analyzer": search",
+  "analyzer": "my_kuromoji_analyzer",
   "text": "検索したい文字"
 }
 '
