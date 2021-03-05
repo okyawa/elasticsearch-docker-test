@@ -388,6 +388,29 @@ curl -X GET "localhost:9200/bank/_search?pretty" -H 'Content-Type: application/j
 }'
 ```
 
+- 複数のAggregationが必要な場合
+```sh
+curl -X GET "localhost:9200/bank/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": { "match_all": {} },
+  "_source": ["account_number", "balance", "name", "firstname", "age"],
+  "aggs": {
+    "balance": {
+      "terms": {
+        "field": "balance"
+      }
+    },
+    "age": {
+      "terms": {
+        "field": "age"
+      }
+    }
+  },
+  "size": 10,
+  "sort": { "balance": { "order": "desc" } }
+}'
+```
+
 
 
 
